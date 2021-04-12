@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <TItle>JS Drum Kit</TItle>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="keys">
+            <div class="key" data-key="65">
+                <kbd>A</kbd>
+                <span class="sound">clap</span>
+            </div>
+            <div class="key" data-key="83">
+                <kbd>S</kbd>
+                <span class="sound">hihat</span>
+            </div>
+            <div class="key" data-key="68">
+                <kbd>D</kbd>
+                <span class="sound">kick</span>
+            </div>
+            <div class="key" data-key="70">
+                <kbd>F</kbd>
+                <span class="sound">openhat</span>
+            </div>
+            <div class="key" data-key="71">
+                <kbd>G</kbd>
+                <span class="sound">boom</span>
+            </div>
+            <div class="key" data-key="72">
+                <kbd>H</kbd>
+                <span class="sound">ride</span>
+            </div>
+            <div class="key" data-key="74">
+                <kbd>J</kbd>
+                <span class="sound">snare</span>
+            </div>
+            <div class="key" data-key="75">
+                <kbd>K</kbd>
+                <span class="sound">tom</span>
+            </div>
+            <div class="key" data-key="76">
+                <kbd>L</kbd>
+                <span class="sound">tink</span>
+            </div>
+        </div>
+
+        <audio data-key="65" src="sounds/01 - JavaScript Drum Kit_sounds_clap.wav"></audio>
+        <audio data-key="83" src="sounds/01 - JavaScript Drum Kit_sounds_hihat.wav"></audio>
+        <audio data-key="68" src="sounds/01 - JavaScript Drum Kit_sounds_kick.wav"></audio>
+        <audio data-key="70" src="sounds/01 - JavaScript Drum Kit_sounds_openhat.wav"></audio>
+        <audio data-key="71" src="sounds/01 - JavaScript Drum Kit_sounds_boom.wav"></audio>
+        <audio data-key="72" src="sounds/01 - JavaScript Drum Kit_sounds_ride.wav"></audio>
+        <audio data-key="74" src="sounds/01 - JavaScript Drum Kit_sounds_snare.wav"></audio>
+        <audio data-key="75" src="sounds/01 - JavaScript Drum Kit_sounds_tom.wav"></audio>
+        <audio data-key="76" src="sounds/01 - JavaScript Drum Kit_sounds_tink.wav"></audio>
+
+        <script>
+            /*[cjocol]-10/04/2021 Este escuchador de eventos escuha el evento 'keydown' dentro de la ventana de nuestra
+            aplicación y la función 'function (e)' devuelve el evento que se este escuchando.
+            mas nosotros estamos interesados en el 'keyCode' ya que es la letra que estamos presionando.*/
+
+                
+            window.addEventListener('keydown', function(e) {
+                //console.log(e.keyCode); /// Devuelve en consola el numero correspondiente a la letra que se presiona.
+
+                /*Llegado a este punto debemos encontrar la manera de poder verificar
+                si existe algun elemento dentro de nuestra ventana la cual tenga asignada un data-key*/
+
+                //Debemos seleccionar dentro de nuestro documento un elemento de audio donde 
+                //exista un atributo data-key esto utilizando attribute selectors y ES6 template strings
+                //ya que queremos saber que elemento presionamos y no especificar uno por uno.
+                const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`) 
+                const audioKey = document.querySelector(`.key[data-key="${e.keyCode}"]`) //Nos permite seleccionar la tecla correspondiente al sonido que se esta reproduciendo
+                if(!audio){return;} //No permite que la función corra si es que no hay un atributo data-key
+
+                /*console.log(audio); //Muestra en consola el audio que se reproduce al presionar una tecla
+                console.log(audioKey); //Muestra en consola el codigo de tecla que se esta presionando*/
+
+                audioKey.classList.add('playing');
+                audio.currentTime = 0; //Regresa el audio al inicio permitiendo que este pueda sonar cada vez que se presiona la tecla correspondiente
+                audio.play(); //Reproduce el audio asignado en data-key
+
+                //Debemos hacer uso de un 'Transition end event' para que la animación se detenga una vez esta se haya reproducido
+                const keys = document.querySelectorAll('.key'); //Selecciona todos los elementos con clase .key
+                //TIME-STAMP: 13:57
+            });
+        </script>
+    </body>
+</html>
