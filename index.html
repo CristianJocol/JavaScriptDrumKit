@@ -60,9 +60,14 @@
             aplicación y la función 'function (e)' devuelve el evento que se este escuchando.
             mas nosotros estamos interesados en el 'keyCode' ya que es la letra que estamos presionando.*/
 
-                
-            window.addEventListener('keydown', function(e) {
-                //console.log(e.keyCode); /// Devuelve en consola el numero correspondiente a la letra que se presiona.
+            //Funcion para remover transición
+            function removeTransition(e){ //Toma el evento como parámetro
+                        if (e.propertyName !== 'transform') return; //Si no hay transición la función no debe ejecutarse.
+                        this.classList.remove('playing');
+                }
+            
+            function playSound(e){
+                 //console.log(e.keyCode); /// Devuelve en consola el numero correspondiente a la letra que se presiona.
 
                 /*Llegado a este punto debemos encontrar la manera de poder verificar
                 si existe algun elemento dentro de nuestra ventana la cual tenga asignada un data-key*/
@@ -80,11 +85,13 @@
                 audioKey.classList.add('playing');
                 audio.currentTime = 0; //Regresa el audio al inicio permitiendo que este pueda sonar cada vez que se presiona la tecla correspondiente
                 audio.play(); //Reproduce el audio asignado en data-key
+            }
+               
 
                 //Debemos hacer uso de un 'Transition end event' para que la animación se detenga una vez esta se haya reproducido
-                const keys = document.querySelectorAll('.key'); //Selecciona todos los elementos con clase .key
-                //TIME-STAMP: 13:57
-            });
+                const keys = Array.from(document.querySelectorAll('.key')); //Selecciona todos los elementos con clase .key
+                keys.forEach(key => key.addEventListener('transitionend', removeTransition)); //Para cada elemento con clase key debemos agregar un escuchador de eventos el cual escuche a 'transitioned' para que nos permita correr la funcion removeTransition
+                window.addEventListener('keydown', playSound);
         </script>
     </body>
 </html>
